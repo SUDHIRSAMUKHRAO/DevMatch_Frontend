@@ -14,6 +14,7 @@ const Login = () => {
      const [password, setPassword] = useState("sudhir@123");
      const disPatch = useDispatch();
      const naviagte = useNavigate();
+     const [error, setError] = useState("");
  
 
    const  handelLogin = async() => {
@@ -21,13 +22,13 @@ const Login = () => {
         const response = await axios.post(Base_url +"/login", 
        {emailId: emailId, password: password},
         {withCredentials: true});
-        console.log(response );
 
         disPatch(addUser(response.data));
-        return naviagte("/")
+        return naviagte("/")  
  
      } catch (error) {
-        console.error(error);
+          setError(error?.response?.data || "something went wrong");
+       
      }
 
    }
@@ -54,7 +55,7 @@ const Login = () => {
                               onChange={(e)=>setPassword(e.target.value)}/>
                          </label></div>
 
-
+                     <p className="text-red-500">{error}</p>
                     <div className="card-actions justify-center">
                          <button className="btn btn-primary "onClick={handelLogin}>Login</button>
                     </div>

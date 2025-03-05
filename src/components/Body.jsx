@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import NavBar from "./navBar"
+import NavBar from "./NavBar"; // Ensure correct casing
 import Footer from "./Footer";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -8,46 +8,40 @@ import { addUser } from "../utils/userSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-//
-const Body = ()=>{
+const Body = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const userData = useSelector((store) => store.user); // Redux user state
 
-    const dispatch = useDispatch();
-    const  Navigate = useNavigate();
-    const userData = useSelector((store)=>store.user)//when we login redux store will have data.
-                                                     //baseon that if if there is no data in redux store then only useeffect call fetchuser.
-                                 
-    //we using the api for authorize the token for login user 
-    const fetchUser = async ()=>{
-      try{
-         const res = await axios.get(Base_url + "/profile/view",{
-           withCredentials : true
+  // Fetch user if not already in Redux store
+  const fetchUser = async () => {
+    try {
+      if (userData) return; // Avoid unnecessary API calls
 
-         });
-         dispatch(addUser(res.data))
+      const res = await axios.get(Base_url + "/profile/view", {
+        withCredentials: true,
+      });
 
-      }catch(e){
-        if(e.status==401){
-        Navigate("/Login")
-    }
-    console.log(e)
+      dispatch(addUser(res.data));
+    } catch (e) {
+      if (e.response?.status === 401) {
+        navigate("/login");
       }
+      console.log(e);
     }
+  };
 
-    useEffect(()=>{
-        if(!userData){
-        fetchUser();
-        }
-       },[]);
+  useEffect(() => {
+    fetchUser();
+  }, [userData]); // Depend on userData
 
-
-   
-    return <div >
-    <NavBar></NavBar> 
-    <Outlet/>     
-    <Footer></Footer>          
-    
+  return (
+    <div>
+      <NavBar />
+      <Outlet />
+      <Footer />
     </div>
-}
-
+  );
+};
 
 export default Body;
