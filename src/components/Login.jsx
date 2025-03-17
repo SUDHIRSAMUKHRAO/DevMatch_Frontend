@@ -4,12 +4,15 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import { Base_url } from "../utils/constant";
+import { motion } from "framer-motion";
+import { Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const [emailId, setEmailId] = useState("");
   const [firstname, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoginForm, setIsLoginForm] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,12 +47,25 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center my-10">
+    <motion.div 
+      className="flex justify-center my-10"
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+    >
       <div className="card bg-base-300 w-96 shadow-xl">
         <div className="card-body">
-          <h2 className="card-title justify-center">
+          <motion.h2 
+            className="card-title justify-center"
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             {isLoginForm ? "Login" : "Sign Up"}
-          </h2>
+          </motion.h2>
+          <p className="text-center text-lg font-semibold mb-3">
+            {isLoginForm ? "Hey Developer, please login! Good to see you." : "Hey Developer, new here! Please sign up."}
+          </p>
           <div>
             {!isLoginForm && (
               <>
@@ -88,16 +104,23 @@ const Login = () => {
                 onChange={(e) => setEmailId(e.target.value)}
               />
             </label>
-            <label className="form-control w-full max-w-xs my-2">
+            <label className="form-control w-full max-w-xs my-2 relative">
               <div className="label">
                 <span className="label-text">Password</span>
               </div>
               <input
-                type="password"
+                type={isPasswordVisible ? "text" : "password"}
                 value={password}
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-full max-w-xs pr-10"
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <button
+                type="button"
+                className="absolute right-2 top-9 text-gray-500"
+                onClick={() => setIsPasswordVisible((prev) => !prev)}
+              >
+                {isPasswordVisible ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </label>
           </div>
 
@@ -111,15 +134,15 @@ const Login = () => {
             </button>
           </div>
           <p
-            className="cursor-pointer text-blue-500"
+            className="cursor-pointer text-blue-500 text-center mt-2"
             onClick={() => setIsLoginForm((prev) => !prev)}
           >
             {isLoginForm ? "New User? Sign Up Here" : "Existing User? Login Here"}
           </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-export default Login; // ✅ Now properly at the top level
+export default Login;
