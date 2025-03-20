@@ -1,4 +1,4 @@
-import EditProfile from "./EditProfile";
+import EditProfile from "./Editprofile";
 import { useSelector, useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import axios from "axios";
