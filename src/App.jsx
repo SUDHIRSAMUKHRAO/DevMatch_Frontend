@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import appstore from "./utils/appstore";
 import Feed from "./components/Feed";
 import Connections from "./components/Connections";
-import ConnectionsRequests from "./components/connectionRequest";
+import ConnectionsRequests from "./components/ConnectionRequest";
 function App() {
 
   return (
