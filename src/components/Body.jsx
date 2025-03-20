@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import NavBar from "./NavBar"; // Ensure correct casing
+import NavBar from "./navBar"; // Ensure correct casing
 import Footer from "./Footer";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
